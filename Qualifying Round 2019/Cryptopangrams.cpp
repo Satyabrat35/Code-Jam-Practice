@@ -51,7 +51,7 @@ int main() {
         string ans;
         for(int i=0;i<vp.size();i++) {
             char a = vp[i].first;
-            // rest code here --
+            // rest code here ---
         }
 
         cout<<"Case #"<<k<<": "<<s<<endl;
