@@ -1,8 +1,8 @@
 //
 // Created by Satyabrat Bhol on 05/01/23.
-//
+// Will fail test cases like 10^100
 /**************bhol****************/
-//#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
 #include <cstdio>
 #include <iostream>
 #include <algorithm>
@@ -10,6 +10,7 @@
 #include <string>
 #include <cstdlib>
 #include <map>
+#include <set>
 using namespace std;
 
 long long gcd(long long a , long long b)
@@ -29,32 +30,37 @@ int main() {
         for(int i=0;i<l;i++) {
             cin>>vec[i];
         }
-        vector<pair<long long, long long>> vp;
+        vector<long long> vp(l+1, 0);
         set<long long> st;
         for(int i=0;i<l-1;i++) {
-            long long x = gcd(vec[i], vec[i+1]);
-            long long a = vec[i]/x;
-            long long b = vec[i+1]/x;
-            vp.push_back({a,x});
-            vp.push_back({x,b});
-            st.insert(a);
-            st.insert(b);
-            st.insert(x);
+            // updated logic ig
+            if(vec[i] != vec[i+1]) {
+                vp[i+1] = gcd(vec[i], vec[i+1]);
+                for(int j=i;j>=0;j--) {
+                    vp[j] = vec[j]/vp[j+1];
+                }
+                for(int j=i+1;j<l;j++) {
+                    vp[j+1] = vec[j]/vp[j];
+                }
+            }
         }
-        cout<<s.size();
-        vector<long long>mp(26);
-        int j = 0;
-        for(auto &it: st) {
-            mp[j] = *it;
-            j+=1;
-        }
-        string ans;
         for(int i=0;i<vp.size();i++) {
-            char a = vp[i].first;
-            // rest code here ---
+            st.insert(vp[i]);
         }
 
-        cout<<"Case #"<<k<<": "<<s<<endl;
+        map<long long, char> mp;
+        char j = 'A';
+        for(auto &it: st) {
+            mp[it] = j;
+            j+=1;
+        }
+
+        string ans;
+        for(int i=0;i<vp.size();i++) {
+            ans += mp[vp[i]];
+        }
+
+        cout<<"Case #"<<k<<": "<<ans<<endl;
 
     }
 
